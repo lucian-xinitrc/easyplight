@@ -59,25 +59,40 @@ export default function Home() {
   }, [from, to]);
 
   return (
-    <section className="content-center flex justify-center w-screen h-screen sm:h-screen bg-white">
+    <section className="content-center flex justify-center w-screen h-full sm:h-screen bg-white">
     <div className="content-center">
-      <h2 className="text-7xl text-black p-10 text-center">Easy Plight</h2>
-      <div className="sm:flex sm:justify-center px-[20%] w-screen py-10 text-base">
+      <h2 className="text-7xl mt-15 text-black text-center">Easy Plight</h2>
+      <p className="text-sm text-gray-800 text-center pt-5"> Note that this website is in beta.</p>
+      <div className="hidden sm:block sm:flex sm:justify-center px-[20%] w-screen py-10 text-base">
         <input 
           type="text"
           onChange={(e) => setFrom(e.target.value)} 
-          className="w-auto p-2 mr-5 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 pl-5 pr-5 text-lg" placeholder="Take off"/>
+          className="w-auto p-2 text-center focus:outline-none bg-white shadow-md/10 rounded-full text-gray-900 text-lg" placeholder="Take off"/>
 
-      <input 
+        <input 
           type="text"
           onChange={(e) => setTo(e.target.value)} 
-          className="w-auto p-2 mt-5 sm:mt-0 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 pl-5 pr-5 text-lg" placeholder="Destination"/>
+          className="w-auto p-2 mt-5 sm:ml-5 sm:mt-0 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 text-lg" placeholder="Destination"/>
       
       </div>
-      <div className="flex justify-center px-[20%] w-screen py-10 text-black">
+
+      <div className="block sm:hidden sm:flex sm:justify-center px-[15%] w-full text-base">
+      <div className="w-auto px-0 py-10">
+        <input 
+          type="text"
+          onChange={(e) => setFrom(e.target.value)} 
+          className="w-full p-2 text-center focus:outline-none bg-white shadow-md/10 rounded-full text-gray-900 text-lg" placeholder="Take off"/>
+
+        <input 
+          type="text"
+          onChange={(e) => setTo(e.target.value)} 
+          className="w-full p-2 mt-5 sm:mt-0 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 text-lg" placeholder="Destination"/>
+      </div>
+      </div>
+      <div className="flex justify-center px-[15%] w-screen pb-10 text-black">
         {selected ? (
                   from || to ? ( <div className="sm:flex justify-center w-full">
-                 <div className="w-auto sm:flex sm:w-2xl bg-white"><div class="relative w-auto sm:w-2xl overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                 <div className="w-full sm:flex sm:w-2xl bg-white"><div class="relative w-full sm:w-2xl overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                       <thead className="text-base text-gray-700 text-center uppercase text-gray-400">
                           <tr>
                               <th scope="col" class="px-6 py-3">
@@ -120,8 +135,8 @@ export default function Home() {
                   ) 
                   
               ) : (
-                from || to ? ( <div className="sm:flex justify-center w-auto">
-                 <div class="relative w-auto sm:w-md overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                from || to ? ( <div className="sm:flex justify-center w-full">
+                 <div class="relative w-full sm:w-md overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                       <thead className="text-base text-gray-700 text-center uppercase text-gray-400">
                           <tr>
                               <th scope="col" class="px-6 py-3">
