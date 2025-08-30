@@ -1,103 +1,164 @@
+'use client';
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+const flights = [
+  {
+    id:"0",
+    from: "Cluj",
+    to: "Vienna",
+    price: "200",
+    date: '2025-08-10'
+  },
+  {
+    id:"1",
+    from: "Cluj",
+    to: "London",
+    price: "250",
+    date: '2025-08-11'
+  },
+  {
+    id:"2",
+    from: "Cluj",
+    to: "London",
+    price: "300",
+    date: '2025-08-11'
+  },
+  {
+    id:"3",
+    from: "Vienna",
+    to: "Cluj",
+    price: "150",
+    date: '2025-08-15'
+  },
+  {
+    id:"4",
+    from: "London",
+    to:"Cluj",
+    price: "200",
+    date: '2025-08-16'
+  }
+];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+export default function Home() {
+  const [ from, setFrom ] = useState("");
+  const [ results, setResults ] = useState([]);
+  const [ status, setStatus ] = useState(false);
+  const [ to, setTo ] = useState("");
+  const [ selected, setSelected ] = useState(null);
+
+  useEffect(() => {
+    const filtered = flights.filter(flight => 
+      ( flight.from.includes(from) && ( from || to ) ) &&
+      ( flight.to.includes(to) && ( from || to ) )
+    )
+    .sort((a, b) => a.price - b.price);
+    setResults(filtered);
+    setStatus(true);
+    setSelected(null);
+  }, [from, to]);
+
+  return (
+    <section className="content-center flex justify-center w-screen h-screen sm:h-screen bg-white">
+    <div className="content-center">
+      <h2 className="text-7xl text-black p-10 text-center">Easy Plight</h2>
+      <div className="sm:flex sm:justify-center px-[20%] w-screen py-10 text-base">
+        <input 
+          type="text"
+          onChange={(e) => setFrom(e.target.value)} 
+          className="w-auto p-2 mr-5 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 pl-5 pr-5 text-lg" placeholder="Take off"/>
+
+      <input 
+          type="text"
+          onChange={(e) => setTo(e.target.value)} 
+          className="w-auto p-2 mt-5 sm:mt-0 text-center focus:outline-none bg-white  shadow-md/10 rounded-full text-gray-900 pl-5 pr-5 text-lg" placeholder="Destination"/>
+      
+      </div>
+      <div className="flex justify-center px-[20%] w-screen py-10 text-black">
+        {selected ? (
+                  from || to ? ( <div className="sm:flex justify-center w-full">
+                 <div className="w-auto sm:flex sm:w-2xl bg-white"><div class="relative w-auto sm:w-2xl overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                      <thead className="text-base text-gray-700 text-center uppercase text-gray-400">
+                          <tr>
+                              <th scope="col" class="px-6 py-3">
+                                  From - To
+                              </th>
+                              <th scope="col" class="px-6 py-3">
+                                  Price
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {results.map((flight, idx) => (
+                              <tr class="text-base bg-white border-b text-center dark:bg-white dark:border-gray-200 border-gray-200 hover:bg-gray-100">
+                                  <th scope="row" key={idx} class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-gray-900">
+                                     <button onClick={() => setSelected(flight.id)}>
+                                        {flight.from} - {flight.to}</button>
+                                  </th>
+                                  <td class="px-6 py-4 text-gray-900">
+                                      {flight.price}
+                                  </td>
+                            </tr>
+                          ))}
+                        
+                      </tbody>
+                  </table>
+                  
+                  </div>
+                  <div className="w-auto sm:w-4xl sm:mx-5 my-5 sm:my-0 py-10 px-10 rounded-lg shadow-md border border-solid border-black/[.02]">
+                      <h1 className="text-2xl"> {results[selected].from} - {results[selected].to}</h1>
+                      <div className="flex justify-center">
+                            <span class="bg-blue-100 text-blue-800 shadow-xl/10 text-sm font-medium px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 p-5 m-5 pb-0">{results[selected].date}</span>
+                      </div>
+                  </div>
+                    </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h2 className="text-lg">Unfortunately this is an error.</h2>
+                    </div>
+                  ) 
+                  
+              ) : (
+                from || to ? ( <div className="sm:flex justify-center w-auto">
+                 <div class="relative w-auto sm:w-md overflow-x-auto shadow-md sm:rounded-lg"> <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                      <thead className="text-base text-gray-700 text-center uppercase text-gray-400">
+                          <tr>
+                              <th scope="col" class="px-6 py-3">
+                                  From - To
+                              </th>
+                              <th scope="col" class="px-6 py-3">
+                                  Price
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {results.map((flight, idx) => (
+                              <tr class="text-base bg-white border-b text-center dark:bg-white dark:border-gray-200 border-gray-200 hover:bg-gray-100">
+                                  <th scope="row" key={idx} class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-gray-900">
+                                     <button onClick={() => setSelected(flight.id)}>
+                                        {flight.from} - {flight.to}</button>
+                                  </th>
+                                  <td class="px-6 py-4 text-gray-900">
+                                      {flight.price}
+                                  </td>
+                            </tr>
+                          ))}
+                        
+                      </tbody>
+                  </table>
+                  
+                  </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <h2 className="text-lg">Welcome, Type your trip details above to continue</h2>
+                    </div>
+                  ) 
+              )}
+           {}
+      </div>
     </div>
+    </section>
   );
 }
